@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!-- Created with https://studio.penguinmod.com/PenguinMod-Packager/ -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- We only include this to explicitly loosen the CSP of various packager environments. It does not provide any security. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:">
+  <title>geometry up dx</title>
+  <style>
+    body {
+      color: #ffffff;
+      font-family: sans-serif;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    :root, body.is-fullscreen {
+      background-color: #000000;
+    }
+    [hidden] {
+      display: none !important;
+    }
+    h1 {
+      font-weight: normal;
+    }
+    a {
+      color: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    #app, #loading, #error, #launch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: default;
+      user-select: none;
+      -webkit-user-select: none;
+      background-color: #000000;
+    }
+    #launch {
+      background-color: rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+    }
+    .green-flag {
+      width: 80px;
+      height: 80px;
+      padding: 16px;
+      border-radius: 100%;
+      background: rgba(255, 255, 255, 0.75);
+      border: 3px solid hsla(0, 100%, 100%, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    #loading {
+      
+    }
+    .progress-bar-outer {
+      border: 1px solid currentColor;
+      height: 10px;
+      width: 200px;
+      max-width: 200px;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      width: 0;
+      background-color: currentColor;
+    }
+    .loading-text, noscript {
+      font-weight: normal;
+      font-size: 36px;
+      margin: 0 0 16px;
+    }
+    .loading-image {
+      margin: 0 0 16px;
+    }
+    #error-message, #error-stack {
+      font-family: monospace;
+      max-width: 600px;
+      white-space: pre-wrap;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+    #error-stack {
+      text-align: left;
+      max-height: 200px;
+      overflow: auto;
+    }
+    .control-button {
+      width: 2rem;
+      height: 2rem;
+      padding: 0.375rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: pointer;
+      border: 0;
+      border-radius: 4px;
+    }
+    .control-button:hover {
+      background: #00c3ff26;
+    }
+    .control-button.active {
+      background: #00c3ff59;
+    }
+    .fullscreen-button {
+      background: white !important;
+    }
+    .standalone-fullscreen-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 0 0 0 4px;
+      padding: 4px;
+      cursor: pointer;
+    }
+    .sc-canvas {
+      cursor: auto;
+    }
+    .sc-monitor-root[data-opcode^="data_"] .sc-monitor-value-color {
+      background-color: #ff8c1a;
+    }
+    .sc-monitor-row-value-outer {
+      background-color: #fc662c;
+    }
+    .sc-monitor-row-value-editing .sc-monitor-row-value-outer {
+      background-color: #e25b27;
+    }
+    
+  </style>
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="data:image/png;base64,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">
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="launch" class="screen" hidden title="Click to start">
+    <div class="green-flag">
+      <svg viewBox="0 0 16.63 17.5" width="42" height="44">
+        <defs><style>.cls-1,.cls-2{fill:#007AF4;stroke:#003080;stroke-linecap:round;stroke-linejoin:round;}.cls-2{stroke-width:1.5px;}</style></defs>
+        <path class="cls-1" d="M.75,2A6.44,6.44,0,0,1,8.44,2h0a6.44,6.44,0,0,0,7.69,0V12.4a6.44,6.44,0,0,1-7.69,0h0a6.44,6.44,0,0,0-7.69,0"/>
+        <line class="cls-2" x1="0.75" y1="16.75" x2="0.75" y2="0.75"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="loading" class="screen">
+    <noscript>Enable JavaScript</noscript>
+    <h1 class="loading-text">Loading</h1>
+    
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="loading-inner"></div></div>
+  </div>
+
+  <div id="error" class="screen" hidden>
+    <h1>Error</h1>
+    <details>
+      <summary id="error-message"></summary>
+      <p id="error-stack"></p>
+    </details>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const appElement = document.getElementById('app');
+    const launchScreen = document.getElementById('launch');
+    const loadingScreen = document.getElementById('loading');
+    const loadingInner = document.getElementById('loading-inner');
+    const errorScreen = document.getElementById('error');
+    const errorScreenMessage = document.getElementById('error-message');
+    const errorScreenStack = document.getElementById('error-stack');
+
+    const handleError = (error) => {
+      console.error(error);
+      if (!errorScreen.hidden) return;
+      errorScreen.hidden = false;
+      errorScreenMessage.textContent = '' + error;
+      let debug = error && error.stack || 'no stack';
+      debug += '\nUser agent: ' + navigator.userAgent;
+      errorScreenStack.textContent = debug;
+    };
+    const setProgress = (progress) => {
+      if (loadingInner) loadingInner.style.width = progress * 100 + '%';
+    };
+    const interpolate = (a, b, t) => a + t * (b - a);
+
+    try {
+      setProgress(0.1);
+
+      const scaffolding = new Scaffolding.Scaffolding();
+      scaffolding.width = 360;
+      scaffolding.height = 640;
+      scaffolding.resizeMode = "preserve-ratio";
+      scaffolding.editableLists = false;
+      scaffolding.usePackagedRuntime = true;
+      scaffolding.setup();
+      scaffolding.appendTo(appElement);
+
+      const vm = scaffolding.vm;
+      window.scaffolding = scaffolding;
+      window.vm = scaffolding.vm;
+      window.Scratch = {
+        vm,
+        renderer: vm.renderer,
+        audioEngine: vm.runtime.audioEngine,
+        bitmapAdapter: vm.runtime.v2BitmapAdapter,
+        videoProvider: vm.runtime.ioDevices.video.provider
+      };
+
+      scaffolding.setUsername("player####".replace(/#/g, () => Math.floor(Math.random() * 10)));
+      scaffolding.setAccentColor("#00c3ff");
+
+      try {
+        scaffolding.addCloudProvider(new Scaffolding.Cloud.WebSocketProvider(["wss://clouddata.turbowarp.org","wss://clouddata.turbowarp.xyz"], "geometryUpDX"));
+      } catch (error) {
+        console.error(error);
+      }
+
+      vm.setTurboMode(false);
+      if (vm.setInterpolation) vm.setInterpolation(false);
+      if (vm.setFramerate) vm.setFramerate(30);
+      if (vm.renderer.setUseHighQualityRender) vm.renderer.setUseHighQualityRender(false);
+      if (vm.setRuntimeOptions) vm.setRuntimeOptions({
+        fencing: false,
+        miscLimits: false,
+        maxClones: 9999999999,
+        dangerousOptimizations: false
+      });
+      if (vm.setCompilerOptions) vm.setCompilerOptions({
+        enabled: true,
+        warpTimer: false
+      });
+      if (vm.renderer.setMaxTextureDimension) vm.renderer.setMaxTextureDimension(2048);
+
+      if (typeof ScaffoldingAddons !== 'undefined') {
+        ScaffoldingAddons.run(scaffolding, {"gamepad":false,"pointerlock":false,"specialCloudBehaviors":false,"unsafeCloudBehaviors":false,"pause":false});
+      }
+
+      scaffolding.setExtensionSecurityManager({
+        getSandboxMode: () => 'unsandboxed',
+        canLoadExtensionFromProject: () => true
+      });
+      for (const extension of ["data:text/javascript;,(function(Scratch)%20%7B%20%2F%2F%20Name%3A%20Local%20Storage%0A%2F%2F%20ID%3A%20localstorage%0A%2F%2F%20Description%3A%20Store%20data%20persistently.%20Like%20cookies%2C%20but%20better.%0A%2F%2F%20License%3A%20MIT%20AND%20MPL-2.0%0A%0A%2F*%20generated%20l10n%20code%20*%2FScratch.translate.setup(%7B%22de%22%3A%7B%22_Local%20Storage%22%3A%22Speicherplatz%22%7D%2C%22fi%22%3A%7B%22_Local%20Storage%22%3A%22Paikallinen%20muisti%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22Paikallinen%20muisti%20-laajennus%3A%20projektissa%20t%C3%A4ytyy%20suorittaa%20%5C%22aseta%20muistin%20nimiavaruustunnisteeksi%5C%22%20-lohko%20ennen%20kuin%20muita%20lohkoja%20voidaan%20suorittaa.%22%2C%22_delete%20all%20keys%22%3A%22poista%20kaikki%20avaimet%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22poista%20avain%20%5BKEY%5D%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22avain%20%5BKEY%5D%22%2C%22_project%20title%22%3A%22projektin%20otsikko%22%2C%22_score%22%3A%22pisteet%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22aseta%20avain%20%5BKEY%5D%20arvoon%20%5BVALUE%5D%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22aseta%20muistin%20nimiavaruustunnisteeksi%20%5BID%5D%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22kun%20toinen%20ikkuna%20muuttaa%20muistia%22%7D%2C%22it%22%3A%7B%22_Local%20Storage%22%3A%22Memoria%20Locale%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22Estensione%20Archiviazone%20Locale%3A%20il%20progetto%20deve%20eseguire%20il%20blocco%20%5C%22imposta%20ID%20spazio%20di%20archiviazione%5C%22%20prima%20di%20usare%20gli%20altri%20blocchi%22%2C%22_delete%20all%20keys%22%3A%22cancella%20tutte%20le%20chiavi%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22cancella%20chiave%20%5BKEY%5D%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22valore%20della%20chiave%20%5BKEY%5D%22%2C%22_project%20title%22%3A%22titolo%20progetto%22%2C%22_score%22%3A%22punteggio%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22imposta%20valore%20chiave%20%5BKEY%5D%20a%20%5BVALUE%5D%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22imposta%20ID%20spazio%20archiviazione%20a%20%5BID%5D%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22quando%20altra%20finestra%20cambia%20spazio%20di%20archiviazione%22%7D%2C%22ja%22%3A%7B%22_Local%20Storage%22%3A%22%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%EF%BC%9A%E4%BB%96%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B%E5%89%8D%E3%81%AB%E3%80%81%E3%80%8C%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E3%81%AE%E5%90%8D%E5%89%8D%E3%82%92()%E3%81%AB%E3%81%99%E3%82%8B%E3%80%8D%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%99%E3%80%82%22%2C%22_delete%20all%20keys%22%3A%22%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%AD%E3%83%BC%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22%E3%82%AD%E3%83%BC%5BKEY%5D%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22%E3%82%AD%E3%83%BC%E3%82%92%E5%8F%96%E5%BE%97%5BKEY%5D%22%2C%22_project%20title%22%3A%22%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%81%AE%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%22%2C%22_score%22%3A%22%E3%82%B9%E3%82%B3%E3%82%A2%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22%E3%82%AD%E3%83%BC%5BKEY%5D%E3%82%92%5BVALUE%5D%E3%81%AB%E3%81%99%E3%82%8B%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E3%81%AE%E5%90%8D%E5%89%8D%E7%A9%BA%E9%96%93ID%E3%82%92%5BID%5D%E3%81%AB%E3%81%99%E3%82%8B%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22%E4%BB%96%E3%81%AE%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E3%81%8C%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E3%82%92%E5%A4%89%E3%81%88%E3%81%9F%E3%81%A8%E3%81%8D%22%7D%2C%22ko%22%3A%7B%22_Local%20Storage%22%3A%22%EB%A1%9C%EC%BB%AC%20%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22%EB%A1%9C%EC%BB%AC%20%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%20%ED%99%95%EC%9E%A5%20%EA%B8%B0%EB%8A%A5%3A%20%ED%99%95%EC%9E%A5%20%EA%B8%B0%EB%8A%A5%EC%9D%98%20%EB%B8%94%EB%A1%9D%EC%9D%84%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0%20%EC%A0%84%EC%97%90%20%EB%B0%98%EB%93%9C%EC%8B%9C%20%5C%22%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%EC%9D%98%20%EB%84%A4%EC%9E%84%EC%8A%A4%ED%8E%98%EC%9D%B4%EC%8A%A4%20ID%EB%A5%BC%20...(%EC%9C%BC)%EB%A1%9C%20%EC%A0%95%ED%95%98%EA%B8%B0%5C%22%20%EB%B8%94%EB%A1%9D%EC%9D%84%20%EC%8B%A4%ED%96%89%ED%95%B4%EC%95%BC%20%ED%95%A9%EB%8B%88%EB%8B%A4%22%2C%22_delete%20all%20keys%22%3A%22%EB%AA%A8%EB%93%A0%20%ED%82%A4%20%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22%5BKEY%5D%20%ED%82%A4%20%EC%82%AD%EC%A0%9C%ED%95%98%EA%B8%B0%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22%5BKEY%5D%20%ED%82%A4%EC%9D%98%20%EA%B0%92%22%2C%22_project%20title%22%3A%22%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%A0%9C%EB%AA%A9%22%2C%22_score%22%3A%22%EC%A0%90%EC%88%98%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22%ED%82%A4%20%5BKEY%5D%EC%9D%84(%EB%A5%BC)%20%5BVALUE%5D(%EC%9C%BC)%EB%A1%9C%20%EC%A0%95%ED%95%98%EA%B8%B0%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%EC%9D%98%20%EB%84%A4%EC%9E%84%EC%8A%A4%ED%8E%98%EC%9D%B4%EC%8A%A4%20ID%EB%A5%BC%20%5BID%5D(%EC%9C%BC)%EB%A1%9C%20%EC%A0%95%ED%95%98%EA%B8%B0%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22%EB%8B%A4%EB%A5%B8%20%EC%B0%BD%EC%97%90%EC%84%9C%20%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%EB%A5%BC%20%EB%B3%80%EA%B2%BD%ED%96%88%EC%9D%84%20%EB%95%8C%22%7D%2C%22nb%22%3A%7B%22_Local%20Storage%22%3A%22Lokal%20lagring%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22Lokal%20lagring%20utvidelse%3A%20prosjektet%20m%C3%A5%20kj%C3%B8re%20blokken%20%5C%22sett%20lagringsnavnerom-ID%5C%22%20f%C3%B8r%20det%20kan%20bruke%20andre%20blokker%22%2C%22_delete%20all%20keys%22%3A%22slett%20alle%20n%C3%B8kler%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22slett%20n%C3%B8kkel%20%5BKEY%5D%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22f%C3%A5%20n%C3%B8kkel%20%5BKEY%5D%22%2C%22_project%20title%22%3A%22prosjekttittel%22%2C%22_score%22%3A%22poengsum%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22sett%20n%C3%B8kkel%20%5BKEY%5D%20til%20%5BVALUE%5D%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22sett%20lagringsnavnerom-ID%20til%20%5BID%5D%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22n%C3%A5r%20et%20annet%20vindu%20endrer%20lagring%22%7D%2C%22nl%22%3A%7B%22_Local%20Storage%22%3A%22Lokale%20opslag%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22Lokale%20opslag-extensie%3A%20het%20project%20moet%20eerst%20een%20opslagnaamruimte-ID%20toegewezen%20krijgen%20voordat%20de%20andere%20blokken%20kunnen%20werken.%22%2C%22_delete%20all%20keys%22%3A%22verwijder%20alle%20sleutels%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22verwijder%20sleutel%20%5BKEY%5D%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22sleutel%20%5BKEY%5D%22%2C%22_project%20title%22%3A%22projecttitel%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22maak%20sleutel%20%5BKEY%5D%20%5BVALUE%5D%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22maak%20opslagnaamruimte-ID%20%5BID%5D%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22wanneer%20een%20ander%20venster%20de%20opslag%20aanpast%22%7D%2C%22pl%22%3A%7B%22_project%20title%22%3A%22tytu%C5%82%20projektu%22%2C%22_score%22%3A%22wynik%22%7D%2C%22ru%22%3A%7B%22_Local%20Storage%22%3A%22%D0%9B%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%A5%D1%80%D0%B0%D0%BD%D0%B8%D0%BB%D0%B8%D1%89%D0%B5%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22%D0%A0%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%9B%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D0%A5%D1%80%D0%B0%D0%BD%D0%B8%D0%BB%D0%B8%D1%89%D0%B5%3A%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%D0%B4%D0%BE%D0%BB%D0%B6%D0%B5%D0%BD%20%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D1%82%D0%B8%D1%82%D1%8C%20%D0%B1%D0%BB%D0%BE%D0%BA%20%5C%22%D0%B7%D0%B0%D0%B4%D0%B0%D1%82%D1%8C%20ID%20%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%B0%20%D0%B8%D0%BC%D0%B5%D0%BD%20%D1%85%D1%80%D0%B0%D0%BD%D0%B8%D0%BB%D0%B8%D1%89%D0%B0%5C%22%2C%20%D0%BF%D1%80%D0%B5%D0%B6%D0%B4%D0%B5%20%D1%87%D0%B5%D0%BC%20%D0%BE%D0%BD%20%D1%81%D0%BC%D0%BE%D0%B6%D0%B5%D1%82%20%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D0%B4%D1%80%D1%83%D0%B3%D0%B8%D0%B5%20%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%22%2C%22_delete%20all%20keys%22%3A%22%D1%83%D0%B4%D0%B0%D0%BB%D0%B8%D1%82%D1%8C%20%D0%B2%D1%81%D0%B5%20%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D1%8F%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22%D1%83%D0%B4%D0%B0%D0%BB%D0%B8%D1%82%D1%8C%20%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%5BKEY%5D%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%5BKEY%5D%22%2C%22_project%20title%22%3A%22%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0%22%2C%22_score%22%3A%22%D0%BE%D1%87%D0%BA%D0%B8%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22%D0%B7%D0%B0%D0%B4%D0%B0%D1%82%D1%8C%20%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20%5BKEY%5D%20%D0%BD%D0%B0%20%5BVALUE%5D%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22%D0%B7%D0%B0%D0%B4%D0%B0%D1%82%D1%8C%20ID%20%D1%85%D1%80%D0%B0%D0%BD%D0%B8%D0%BB%D0%B8%D1%89%D0%B0%20%D0%BD%D0%B0%20%5BID%5D%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0%20%D0%B4%D1%80%D1%83%D0%B3%D0%BE%D0%B5%20%D0%BE%D0%BA%D0%BD%D0%BE%20%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D1%8F%D0%B5%D1%82%20%D1%85%D1%80%D0%B0%D0%BD%D0%B8%D0%BB%D0%B8%D1%89%D0%B5%22%7D%2C%22uk%22%3A%7B%22_Local%20Storage%22%3A%22%D0%9B%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%B5%20%D0%A1%D1%85%D0%BE%D0%B2%D0%B8%D1%89%D0%B5%22%7D%2C%22zh-cn%22%3A%7B%22_Local%20Storage%22%3A%22%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%22%2C%22_Local%20Storage%20extension%3A%20project%20must%20run%20the%20%5C%22set%20storage%20namespace%20ID%5C%22%20block%20before%20it%20can%20use%20other%20blocks%22%3A%22%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E6%8B%93%E5%B1%95%EF%BC%9A%E8%AF%B7%E5%85%88%E8%BF%90%E8%A1%8C%E2%80%9C%E8%AE%BE%E7%BD%AE%E5%AD%98%E5%82%A8%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4ID%E2%80%9D%E7%A7%AF%E6%9C%A8%E6%89%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E4%B8%8B%E9%9D%A2%E7%9A%84%E7%A7%AF%E6%9C%A8%22%2C%22_delete%20all%20keys%22%3A%22%E5%88%A0%E9%99%A4%E6%89%80%E6%9C%89%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F%22%2C%22_delete%20key%20%5BKEY%5D%22%3A%22%E5%88%A0%E9%99%A4%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F%5BKEY%5D%22%2C%22_get%20key%20%5BKEY%5D%22%3A%22%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F%5BKEY%5D%E7%9A%84%E5%80%BC%22%2C%22_project%20title%22%3A%22%E4%BD%9C%E5%93%81%E6%A0%87%E9%A2%98%22%2C%22_score%22%3A%22%E5%88%86%E6%95%B0%22%2C%22_set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22%3A%22%E8%AE%BE%E7%BD%AE%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F%5BKEY%5D%E7%9A%84%E5%80%BC%E4%B8%BA%5BVALUE%5D%22%2C%22_set%20storage%20namespace%20ID%20to%20%5BID%5D%22%3A%22%E8%AE%BE%E7%BD%AE%E5%AD%98%E5%82%A8%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4ID%E4%B8%BA%5BID%5D%22%2C%22_when%20another%20window%20changes%20storage%22%3A%22%E5%BD%93%E5%85%B6%E4%BB%96%E9%A1%B5%E9%9D%A2%E4%BF%AE%E6%94%B9%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%22%7D%7D)%3B%2F*%20end%20generated%20l10n%20code%20*%2F(function%20(Scratch)%20%7B%0A%20%20%22use%20strict%22%3B%0A%0A%20%20if%20(!Scratch.extensions.unsandboxed)%20%7B%0A%20%20%20%20throw%20new%20Error(%22Local%20Storage%20must%20be%20run%20unsandboxed%22)%3B%0A%20%20%7D%0A%0A%20%20const%20PREFIX%20%3D%20%22extensions.turbowarp.org%2Flocal-storage%3A%22%3B%0A%20%20let%20namespace%20%3D%20%22%22%3B%0A%20%20const%20getFullStorageKey%20%3D%20()%20%3D%3E%20%60%24%7BPREFIX%7D%24%7Bnamespace%7D%60%3B%0A%0A%20%20let%20lastNamespaceWarning%20%3D%200%3B%0A%0A%20%20const%20validNamespace%20%3D%20()%20%3D%3E%20%7B%0A%20%20%20%20const%20valid%20%3D%20!!namespace%3B%0A%20%20%20%20if%20(!valid%20%26%26%20Date.now()%20-%20lastNamespaceWarning%20%3E%203000)%20%7B%0A%20%20%20%20%20%20alert(%0A%20%20%20%20%20%20%20%20Scratch.translate(%0A%20%20%20%20%20%20%20%20%20%20'Local%20Storage%20extension%3A%20project%20must%20run%20the%20%22set%20storage%20namespace%20ID%22%20block%20before%20it%20can%20use%20other%20blocks'%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20%20%20)%3B%0A%20%20%20%20%20%20lastNamespaceWarning%20%3D%20Date.now()%3B%0A%20%20%20%20%7D%0A%20%20%20%20return%20valid%3B%0A%20%20%7D%3B%0A%0A%20%20const%20readFromStorage%20%3D%20()%20%3D%3E%20%7B%0A%20%20%20%20try%20%7B%0A%20%20%20%20%20%20%2F%2F%20localStorage%20could%20throw%20if%20unsupported%0A%20%20%20%20%20%20const%20data%20%3D%20localStorage.getItem(getFullStorageKey())%3B%0A%20%20%20%20%20%20if%20(data)%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20JSON.parse%20could%20throw%20if%20data%20is%20invalid%0A%20%20%20%20%20%20%20%20const%20parsed%20%3D%20JSON.parse(data)%3B%0A%20%20%20%20%20%20%20%20if%20(parsed%20%26%26%20parsed.data)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%2F%2F%20Remove%20invalid%20values%20from%20the%20JSON%0A%20%20%20%20%20%20%20%20%20%20const%20processed%20%3D%20%7B%7D%3B%0A%20%20%20%20%20%20%20%20%20%20for%20(const%20%5Bkey%2C%20value%5D%20of%20Object.entries(parsed.data))%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20typeof%20value%20%3D%3D%3D%20%22number%22%20%7C%7C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20typeof%20value%20%3D%3D%3D%20%22string%22%20%7C%7C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20typeof%20value%20%3D%3D%3D%20%22boolean%22%0A%20%20%20%20%20%20%20%20%20%20%20%20)%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20processed%5Bkey%5D%20%3D%20value%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20return%20processed%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%20catch%20(error)%20%7B%0A%20%20%20%20%20%20console.error(%22error%20reading%20from%20local%20storage%22%2C%20error)%3B%0A%20%20%20%20%7D%0A%20%20%20%20return%20%7B%7D%3B%0A%20%20%7D%3B%0A%0A%20%20const%20saveToLocalStorage%20%3D%20(data)%20%3D%3E%20%7B%0A%20%20%20%20try%20%7B%0A%20%20%20%20%20%20if%20(Object.keys(data).length%20%3E%200)%20%7B%0A%20%20%20%20%20%20%20%20localStorage.setItem(%0A%20%20%20%20%20%20%20%20%20%20getFullStorageKey()%2C%0A%20%20%20%20%20%20%20%20%20%20JSON.stringify(%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20time%3A%20Math.round(Date.now()%20%2F%201000)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20data%2C%0A%20%20%20%20%20%20%20%20%20%20%7D)%0A%20%20%20%20%20%20%20%20)%3B%0A%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20localStorage.removeItem(getFullStorageKey())%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%20catch%20(error)%20%7B%0A%20%20%20%20%20%20console.error(%22error%20saving%20to%20locacl%20storage%22%2C%20error)%3B%0A%20%20%20%20%7D%0A%20%20%7D%3B%0A%0A%20%20window.addEventListener(%22storage%22%2C%20(event)%20%3D%3E%20%7B%0A%20%20%20%20if%20(%0A%20%20%20%20%20%20namespace%20%26%26%0A%20%20%20%20%20%20event.key%20%3D%3D%3D%20getFullStorageKey()%20%26%26%0A%20%20%20%20%20%20event.storageArea%20%3D%3D%3D%20localStorage%0A%20%20%20%20)%20%7B%0A%20%20%20%20%20%20Scratch.vm.runtime.startHats(%22localstorage_whenChanged%22)%3B%0A%20%20%20%20%7D%0A%20%20%7D)%3B%0A%0A%20%20Scratch.vm.runtime.on(%22RUNTIME_DISPOSED%22%2C%20()%20%3D%3E%20%7B%0A%20%20%20%20namespace%20%3D%20%22%22%3B%0A%20%20%7D)%3B%0A%0A%20%20class%20LocalStorage%20%7B%0A%20%20%20%20getInfo()%20%7B%0A%20%20%20%20%20%20return%20%7B%0A%20%20%20%20%20%20%20%20id%3A%20%22localstorage%22%2C%0A%20%20%20%20%20%20%20%20name%3A%20Scratch.translate(%22Local%20Storage%22)%2C%0A%20%20%20%20%20%20%20%20docsURI%3A%20%22https%3A%2F%2Fextensions.turbowarp.org%2Flocal-storage%22%2C%0A%20%20%20%20%20%20%20%20blocks%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opcode%3A%20%22setProjectId%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20blockType%3A%20Scratch.BlockType.COMMAND%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20text%3A%20Scratch.translate(%22set%20storage%20namespace%20ID%20to%20%5BID%5D%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20arguments%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20ID%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%3A%20Scratch.ArgumentType.STRING%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20defaultValue%3A%20Scratch.translate(%22project%20title%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opcode%3A%20%22get%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20blockType%3A%20Scratch.BlockType.REPORTER%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20text%3A%20Scratch.translate(%22get%20key%20%5BKEY%5D%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20arguments%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20KEY%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%3A%20Scratch.ArgumentType.STRING%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20defaultValue%3A%20Scratch.translate(%22score%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opcode%3A%20%22set%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20blockType%3A%20Scratch.BlockType.COMMAND%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20text%3A%20Scratch.translate(%22set%20key%20%5BKEY%5D%20to%20%5BVALUE%5D%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20arguments%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20KEY%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%3A%20Scratch.ArgumentType.STRING%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20defaultValue%3A%20Scratch.translate(%22score%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20VALUE%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%3A%20Scratch.ArgumentType.STRING%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20defaultValue%3A%20%221000%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opcode%3A%20%22remove%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20blockType%3A%20Scratch.BlockType.COMMAND%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20text%3A%20Scratch.translate(%22delete%20key%20%5BKEY%5D%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20arguments%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20KEY%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%3A%20Scratch.ArgumentType.STRING%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20defaultValue%3A%20Scratch.translate(%22score%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opcode%3A%20%22removeAll%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20blockType%3A%20Scratch.BlockType.COMMAND%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20text%3A%20Scratch.translate(%22delete%20all%20keys%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opcode%3A%20%22whenChanged%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20blockType%3A%20Scratch.BlockType.EVENT%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20text%3A%20Scratch.translate(%22when%20another%20window%20changes%20storage%22)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20isEdgeActivated%3A%20false%2C%0A%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%7D%3B%0A%20%20%20%20%7D%0A%20%20%20%20setProjectId(%7B%20ID%20%7D)%20%7B%0A%20%20%20%20%20%20namespace%20%3D%20Scratch.Cast.toString(ID)%3B%0A%20%20%20%20%7D%0A%20%20%20%20get(%7B%20KEY%20%7D)%20%7B%0A%20%20%20%20%20%20if%20(!validNamespace())%20%7B%0A%20%20%20%20%20%20%20%20return%20%22%22%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20const%20storage%20%3D%20readFromStorage()%3B%0A%20%20%20%20%20%20KEY%20%3D%20Scratch.Cast.toString(KEY)%3B%0A%20%20%20%20%20%20if%20(!Object.prototype.hasOwnProperty.call(storage%2C%20KEY))%20%7B%0A%20%20%20%20%20%20%20%20return%20%22%22%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20return%20storage%5BKEY%5D%3B%0A%20%20%20%20%7D%0A%20%20%20%20set(%7B%20KEY%2C%20VALUE%20%7D)%20%7B%0A%20%20%20%20%20%20if%20(!validNamespace())%20%7B%0A%20%20%20%20%20%20%20%20return%20%22%22%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20const%20storage%20%3D%20readFromStorage()%3B%0A%20%20%20%20%20%20storage%5BScratch.Cast.toString(KEY)%5D%20%3D%20VALUE%3B%0A%20%20%20%20%20%20saveToLocalStorage(storage)%3B%0A%20%20%20%20%7D%0A%20%20%20%20remove(%7B%20KEY%20%7D)%20%7B%0A%20%20%20%20%20%20if%20(!validNamespace())%20%7B%0A%20%20%20%20%20%20%20%20return%20%22%22%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20const%20storage%20%3D%20readFromStorage()%3B%0A%20%20%20%20%20%20delete%20storage%5BScratch.Cast.toString(KEY)%5D%3B%0A%20%20%20%20%20%20saveToLocalStorage(storage)%3B%0A%20%20%20%20%7D%0A%20%20%20%20removeAll()%20%7B%0A%20%20%20%20%20%20if%20(!validNamespace())%20%7B%0A%20%20%20%20%20%20%20%20return%20%22%22%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20saveToLocalStorage(%7B%7D)%3B%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20Scratch.extensions.register(new%20LocalStorage())%3B%0A%7D)(Scratch)%3B%0A%20%7D)(Scratch)%3B"]) {
+        vm.extensionManager.loadExtensionURL(extension);
+      }
+
+      vm.runtime.isProjectPermissionManagerDisabled = true;
+      
+    } catch (e) {
+      handleError(e);
+    }
+  </script>
+  
+  
+    <script>
+      const getProjectData = (function() {
+        const storage = scaffolding.storage;
+        storage.onprogress = (total, loaded) => {
+          setProgress(interpolate(0.2, 0.98, loaded / total));
+        };
+        
+        storage.addWebStore(
+          [
+            storage.AssetType.ImageVector,
+            storage.AssetType.ImageBitmap,
+            storage.AssetType.Sound,
+            storage.AssetType.Font
+          ].filter(i => i),
+          (asset) => new URL('./assets/' + asset.assetId + '.' + asset.dataFormat, location).href
+        );
+        return () => new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          resolve(xhr.response);
+        };
+        xhr.onerror = () => {
+          if (location.protocol === 'file:') {
+            reject(new Error('Zip environment must be used from a website, not from a file URL.'));
+          } else {
+            reject(new Error('Request to load project data failed.'));
+          }
+        };
+        xhr.onprogress = (e) => {
+          if (e.lengthComputable) {
+            setProgress(interpolate(0.1, 0.2, e.loaded / e.total));
+          }
+        };
+        xhr.responseType = 'arraybuffer';
+        xhr.open('GET', "./assets/project.json");
+        xhr.send();
+      });
+      })();
+    </script>
+  <script>
+    const run = async () => {
+      const projectData = await getProjectData();
+      await scaffolding.loadProject(projectData);
+      setProgress(1);
+      loadingScreen.hidden = true;
+      if (true) {
+        scaffolding.start();
+      } else {
+        launchScreen.hidden = false;
+        launchScreen.addEventListener('click', () => {
+          launchScreen.hidden = true;
+          scaffolding.start();
+        });
+        launchScreen.focus();
+      }
+    };
+    run().catch(handleError);
+  </script>
+</body>
+</html>
